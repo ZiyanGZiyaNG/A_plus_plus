@@ -10,21 +10,32 @@ def parse_line(line):
             line = line.split(comment_mark)[0].strip()
     if line == "":
         return None
+    # 陣列賦值：arr[2] = xxx
+    match = re.match(r"(\w+)\[(.+)\] *= *(.*)", line)
+    if match:
+        name = match.group(1)
+        idx = parse_expr(match.group(2))
+        expr = parse_expr(match.group(3))
+        return ArrayAssign(name, idx, expr)
     elif line.startswith("int "):
-        # int x = 5
+        # int arr = [1, 2, 3]
+        match = re.match(r"int (\w+) *= *\[(.*)\]", line)
+        if match:
+            name = match.group(1)
+            elems = [parse_expr(e.strip()) for e in match.group(2).split(",") if e.strip() != ""]
+            return Assign(name, Array(elems))
+        # int x = ...  (普通變數)
         match = re.match(r"int (\w+) *= *(.*)", line)
         if match:
             name = match.group(1)
             expr = parse_expr(match.group(2))
             return Assign(name, expr)
     elif line.startswith("out("):
-        # out(x + 1)
         match = re.match(r"out\((.*)\)", line)
         if match:
             expr = parse_expr(match.group(1))
             return Print(expr)
     elif line.startswith("if"):
-        # if (x > 0) {
         match = re.match(r"if *\((.*)\) *\{", line)
         if match:
             cond = parse_expr(match.group(1))
@@ -37,17 +48,12 @@ def parse_line(line):
             cond = parse_expr(match.group(1))
             return ("while", cond)
     elif line.startswith("for"):
-        # for (int i = 0, i < 10, i = i + 1) {
-        match = re.match(r"for *\(int (\w+) *= *(\d+), *\1 *< *(\w+),.*\) *\{", line)
+        # for (int i = 0, i < xxx, i = i + 1) {
+        match = re.match(r"for *\(int (\w+) *= *(.+), *\1 *< *(.+),.*\) *\{", line)
         if match:
             var = match.group(1)
-            start = Number(int(match.group(2)))
-            # 上界可變數或常數
-            end_token = match.group(3)
-            if end_token.isdigit():
-                end = Number(int(end_token))
-            else:
-                end = Variable(end_token)
+            start = parse_expr(match.group(2))
+            end = parse_expr(match.group(3))
             return ("for", var, start, end)
     elif line == "}":
         return "end"
@@ -56,26 +62,46 @@ def parse_line(line):
 
 def parse_expr(expr):
     expr = expr.strip()
+    # 陣列動態建立 [1, 2, 3]
+    if expr.startswith("[") and expr.endswith("]"):
+        elems = [parse_expr(e.strip()) for e in expr[1:-1].split(",") if e.strip() != ""]
+        return Array(elems)
+    # arr[索引]
+    match = re.match(r"(\w+)\[(.+)\]", expr)
+    if match:
+        return ArrayAccess(match.group(1), parse_expr(match.group(2)))
+    # arr.increase(xxx) / arr.reduce()
+    match = re.match(r"(\w+)\.(increase|reduce)\((.*)\)", expr)
+    if match:
+        obj = match.group(1)
+        method = match.group(2)
+        arg = parse_expr(match.group(3)) if method == "Increase" and match.group(3).strip() else None
+        return MethodCall(obj, method, arg)
+    # arr.length
+    match = re.match(r"(\w+)\.length", expr)
+    if match:
+        return PropertyAccess(match.group(1), "length")
+    # in()
     if expr == "in()":
         return Input()
-    # binary expression a + b or a >= b
+    # 二元運算
     for op in ["+", "-", "*", "/", "%", "==", "!=", ">=", "<=", ">", "<"]:
         parts = expr.split(op)
         if len(parts) == 2:
             left = parse_expr(parts[0])
             right = parse_expr(parts[1])
             return BinaryOp(op, left, right)
-    # number or variable
+    # 數字
     if expr.isdigit():
         return Number(int(expr))
-    else:
-        return Variable(expr)
+    # 變數
+    return Variable(expr)
 
 def parse_program(lines):
     stack = [Block([])]
     for raw_line in lines:
         stmt = parse_line(raw_line)
-        if isinstance(stmt, Assign) or isinstance(stmt, Print):
+        if isinstance(stmt, Assign) or isinstance(stmt, Print) or isinstance(stmt, ArrayAssign):
             stack[-1].stmts.append(stmt)
         elif isinstance(stmt, tuple) and stmt[0] == "if":
             new_block = Block([])
