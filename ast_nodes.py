@@ -23,8 +23,34 @@ class Print:
     def __init__(self, expr):
         self.expr = expr
 
-class Input:   
+class Input:
     pass
+
+class Array:
+    def __init__(self, elements):
+        self.elements = elements
+
+class ArrayAccess:
+    def __init__(self, name, index):
+        self.name = name
+        self.index = index
+
+class ArrayAssign:
+    def __init__(self, name, index, expr):
+        self.name = name
+        self.index = index
+        self.expr = expr
+
+class MethodCall:
+    def __init__(self, obj, method, arg):
+        self.obj = obj
+        self.method = method
+        self.arg = arg
+
+class PropertyAccess:
+    def __init__(self, obj, prop):
+        self.obj = obj
+        self.prop = prop
 
 class IfElse:
     def __init__(self, cond, then_body, else_body):
