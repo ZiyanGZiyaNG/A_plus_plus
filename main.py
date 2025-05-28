@@ -4,8 +4,7 @@ from parser_text import parse_program
 from compiler_custom import compile_to_custom_code
 
 code = """
--- 會要求你輸入一個數字
-
+--以下開使打code
 """
 
 desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
