@@ -4,7 +4,7 @@ import operator
 import os
 from ast_nodes import *
 
-# ✅ 定義桌面上的 output.txt 路徑
+# ✅ 桌面 output.txt 路徑
 desktop_path = os.path.join(os.path.expanduser("~"), "Desktop", "output.txt")
 
 class ReturnException(Exception):
@@ -61,7 +61,7 @@ def eval_expr(expr, env, funcs):
             exec_block(func_def.body, new_env, funcs)
         except ReturnException as e:
             return e.value
-        return None
+        return 0  # ✅ 沒有 return 預設回傳 0
     else:
         raise Exception(f"Unknown expression type: {type(expr)}")
 
@@ -99,9 +99,7 @@ def exec_block(block, env, funcs):
         exec_stmt(stmt, env, funcs)
 
 def run(ast):
-    # ✅ 每次執行前清空桌面的 output.txt
-    open(desktop_path, "w", encoding="utf-8").close()
-
+    open(desktop_path, "w", encoding="utf-8").close()  # ✅ 清空 output.txt
     env = Environment()
     funcs = {}
 
