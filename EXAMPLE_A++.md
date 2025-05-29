@@ -85,3 +85,11 @@
     out(arr2[0])
     out(arr2[1])
     out(arr2.length)
+    
+  # 自訂函數
+    func a(n){
+      return n * 2
+    }
+
+    int x = a(9)
+    out(x)
