@@ -5,7 +5,7 @@ A++ 是一個學習與實驗用的迷你程式語言，
 
 ## 研究動機
 為了完成梗圖
-![image](picture or gif url)
+![image](https://github.com/ZiyanGZiyaNG/A_plus_plus/blob/main/C%2B%2B%20to%20A%2B%2B.jpg)
 
 
 ## 目錄結構
