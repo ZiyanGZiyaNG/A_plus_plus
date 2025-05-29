@@ -73,3 +73,18 @@ class For:
 class Block:
     def __init__(self, stmts):
         self.stmts = stmts
+
+class FunctionDef:
+    def __init__(self, name, params, body):
+        self.name = name
+        self.params = params
+        self.body = body
+
+class FunctionCall:
+    def __init__(self, name, args):
+        self.name = name
+        self.args = args
+
+class Return:
+    def __init__(self, expr):
+        self.expr = expr
