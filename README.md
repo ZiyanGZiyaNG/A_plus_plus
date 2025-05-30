@@ -61,7 +61,7 @@ A_plus_plus/
 4. 所有輸出皆寫入桌面 output.txt（使用者無需另建）
 
 ## 授權協議
-此專案採用 MIT 授權協議 - 詳見 [LICENSE](LICENSE) 文件
+此專案採用 MIT 授權協議 - 詳見 [LICENSE](https://github.com/ZiyanGZiyaNG/A_plus_plus/blob/main/LINCESE) 文件
 
 ## 作者
 ZiyanGZiyaNG
