@@ -1,17 +1,22 @@
 # compiler_custom.py
+
+# 讀ast_nodes
 from ast_nodes import *
 
+# 模擬 return
 class ReturnException(Exception):
     def __init__(self, value):
         self.value = value
 
+# 主編譯器
 def compile_to_custom_code(ast, filename):
     outputs = []
     eval_block(ast, {}, {}, outputs)
     with open(filename, "w", encoding="utf-8") as f:
-        for line in outputs:
+        for line in outputs: # 每個輸出都是一行，所以不會向C++一樣要去另外寫"endl" 或 "\n"
             f.write(str(line) + "\n")
 
+# 判斷變數、算式、函數
 def eval_expr(expr, env, funcs):
     if isinstance(expr, Number):
         return expr.value
