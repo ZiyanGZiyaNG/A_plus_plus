@@ -66,4 +66,5 @@ A_plus_plus/
 
 ## 作者
 ZiyanGZiyaNG
-一律同意搞報他
+
+本人同意所有人搞爆或者修復他
