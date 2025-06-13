@@ -64,6 +64,9 @@ A_plus_plus/
 ## 授權協議
 此專案採用 MIT 授權協議 - 詳見 [LICENSE](https://github.com/ZiyanGZiyaNG/A_plus_plus/blob/main/LINCESE) 文件
 
+## 語法
+參考[EXAMPLE_A++](https://github.com/ZiyanGZiyaNG/A_plus_plus/blob/main/EXAMPLE_A++)
+
 ## 作者
 ZiyanGZiyaNG
 
