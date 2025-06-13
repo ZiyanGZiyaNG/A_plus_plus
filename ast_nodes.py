@@ -83,7 +83,7 @@ class For:
         self.end_expr = end_expr
         self.body = body
 
-# if/for/while 結構的判斷
+# if/for/while 結構的判斷({})
 class Block:
     def __init__(self, stmts):
         self.stmts = stmts
